@@ -21,48 +21,48 @@
 #
 # Add the following lines to /etc/rc.conf to enable Kronometrix
 #
-# kdr_enable="YES"
-# kdr_user="krmx"
+# kmon_enable="YES"
+# kmon_user="krmx"
 
 . /etc/rc.subr
 
-name=kdr_agents
-rcvar=kdr_agents_enable
+name=kmon
+rcvar=kmon_enable 
 
 load_rc_config ${name}
 
-command=/opt/kronometrix/etc/agents
+command=/opt/kronometrix/mon/etc/mon
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
 status_cmd="${name}_status"
 
-: ${kdr_agents_enable="YES"}
-: ${kdr_agents_user="krmx"}
-: ${kdr_agents_flags=""}
-: ${kdr_agents_args=""}
+: ${kmon_enable="YES"}
+: ${kmon_user="krmx"}
+: ${kmon_flags=""}
+: ${kmon_args=""}
 
-kdr_agents_start() {
+kmon_start() {
     unset "${rc_arg}_cmd"
     local cmd
-    kdr_agents_args="start"
-    cmd="${command} ${kdr_agents_args}"
-    su -m ${kdr_agents_user} -c "${cmd}" 
+    kmon_args="start"
+    cmd="${command} ${kmon_args}"
+    su -m ${kmon_user} -c "${cmd}" 
 }
 
 
-kdr_agents_stop() {
+kmon_stop() {
     local cmd
-    kdr_agents_args="stop"
-    cmd="${command} ${kdr_agents_args}"
-    su -m ${kdr_agents_user} -c "${cmd}" 
+    kmon_args="stop"
+    cmd="${command} ${kmon_args}"
+    su -m ${kmon_user} -c "${cmd}" 
 }
 
 
-kdr_agents_status() {
+kmon_status() {
     local cmd
-    kdr_agents_args="status"
-    cmd="${command} ${kdr_agents_args}"
-    su -m ${kdr_agents_user} -c "${cmd}" 
+    kmon_args="status"
+    cmd="${command} ${kmon_args}"
+    su -m ${kmon_user} -c "${cmd}" 
 }
 
 
