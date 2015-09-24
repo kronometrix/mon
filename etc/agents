@@ -22,36 +22,23 @@
 RETVAL=0
 OS_NAME=`uname -s`
 
-KRMX_PREFIX="/opt/kronometrix"
+KRMX_PREFIX="/opt/kronometrix/mon"
 KRMX_ETC=${KRMX_PREFIX}/etc
 KRMX_LOG=${KRMX_PREFIX}/log
-RECORDERS="sys cpu disk nic hdw"
+RECORDERS="sys"
+TRANSPORT="sender"
 
-# test all startups
 test -f ${KRMX_ETC}/sysrec.start  || exit 0
-test -f ${KRMX_ETC}/cpurec.start  || exit 0
-test -f ${KRMX_ETC}/diskrec.start || exit 0
-test -f ${KRMX_ETC}/nicrec.start  || exit 0
-test -f ${KRMX_ETC}/hdwrec.start  || exit 0
-test -f ${KRMX_ETC}/jvmrec.start  || exit 0
-test -f ${KRMX_ETC}/netrec.start  || exit 0
-test -f ${KRMX_ETC}/procrec.start || exit 0
-test -f ${KRMX_ETC}/xenrec.start  || exit 0
+test -f ${KRMX_BIN}/sender || exit 0
 
 
-start() {
-    echo "Starting Kronometrix recorders"
+start_rec() {
+    echo "Starting Kronometrix Appliance Monitoring services"
 
     for rec in $RECORDERS
     do
         RETVAL=0
 
-        if [ "X${OS_NAME}" = "XSunOS" ]; then
-            echo " ${rec}rec: \c"
-        else
-            echo -n " ${rec}rec: "
-        fi
-           
         # check pid before start
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
             kill -0 `cat ${KRMX_LOG}/${rec}rec.pid` >/dev/null 2>&1
@@ -73,19 +60,62 @@ start() {
     return $RETVAL
 }
 
+start_trans() {
+
+    echo "Starting Kronometrix transport"
+
+    RETVAL=0
+
+    # check pid before start
+    if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
+        kill -0 `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+            RETVAL=$?
+        else
+            RETVAL=1
+        fi
+        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+    else
+        # no pid files
+        ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+    fi
+
+    return $RETVAL
+}
+
+stop_trans() {
+
+    echo "Stopping Kronometrix transport"
+
+    RETVAL=0
+
+    if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
+        kill `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+        
+        # clean-up transport pid file
+        rm ${KRMX_LOG}/${TRANSPORT}.pid
+
+    else
+        RETVAL=1
+        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
+    fi
+
+    return $RETVAL
+}
+
+
 
 stop() {
-    echo "Stopping Kronometrix recorders"
+    echo "Stopping Kronometrix Appliance Monitoring services"
 
     for rec in $RECORDERS
     do
         RETVAL=0
-
-        if [ "X${OS_NAME}" = "XSunOS" ]; then
-            echo " ${rec}rec: \c"
-        else
-            echo -n " ${rec}rec: "
-        fi
 
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
             # webrec
