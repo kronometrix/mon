@@ -41,7 +41,7 @@ case "$OS_NAME" in
   echo "Not supported OS !"
 esac
 
-KRMX_PREFIX=/opt/kronometrix
+KRMX_PREFIX=/opt/kronometrix/kmon
 KRMX_BIN=${KRMX_PREFIX}/bin
 KRMX_ETC=${KRMX_PREFIX}/etc
 KRMX_LIB=${KRMX_PREFIX}/lib
@@ -52,32 +52,10 @@ KRMX_DAILY=${KRMX_LOG}/daily
 
 ### RAW DATA FILES
 SYSREC_CUR=${KRMX_CURRENT}/sysrec.krd
-CPUREC_CUR=${KRMX_CURRENT}/cpurec.krd
-DISKREC_CUR=${KRMX_CURRENT}/diskrec.krd
-NICREC_CUR=${KRMX_CURRENT}/nicrec.krd
-NETREC_CUR=${KRMX_CURRENT}/netrec.krd
-JVMREC_CUR=${KRMX_CURRENT}/jvmrec.krd
-HDWREC_CUR=${KRMX_CURRENT}/hdwrec.krd
-PROCREC_CUR=${KRMX_CURRENT}/procrec.krd
-VWSREC_CUR=${KRMX_CURRENT}/vwsrec.krd
-VMWREC_CUR=${KRMX_CURRENT}/vmwrec.krd
-XENREC_CUR=${KRMX_CURRENT}/xenrec.krd
-WSREC_CUR=${KRMX_CURRENT}/wsrec.krd
 
 
 ### RECORDER LOG
 SYSREC_LOG=${KRMX_LOG}/sysrec.log
-CPUREC_LOG=${KRMX_LOG}/cpurec.log
-NETREC_LOG=${KRMX_LOG}/netrec.log
-DISKREC_LOG=${KRMX_LOG}/diskrec.log
-NICREC_LOG=${KRMX_LOG}/nicrec.log
-JVMREC_LOG=${KRMX_LOG}/jvmrec.log
-HDWREC_LOG=${KRMX_LOG}/hdwrec.log
-PROCREC_LOG=${KRMX_LOG}/procrec.log
-VMWREC_LOG=${KRMX_LOG}/vmwrec.log
-VWSREC_LOG=${KRMX_LOG}/vwsrec.log
-XENREC_LOG=${KRMX_LOG}/xenrec.log
-WSREC_LOG=${KRMX_LOG}/wsrec.log
 
 
 PERL_BIN=${KRMX_PREFIX}/perl/bin/perl
@@ -87,4 +65,4 @@ PERL_BIN=${KRMX_PREFIX}/perl/bin/perl
 #  
 # umask 022
 
-export HOSTNAME KRMX_PREFIX KRMX_BIN KRMX_LOG KRMX_RAW KRMX_DAILY PERL_BIN MPSTAT_BIN
+export HOSTNAME KRMX_PREFIX KRMX_BIN KRMX_LOG KRMX_RAW KRMX_DAILY PERL_BIN

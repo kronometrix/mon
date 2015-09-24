@@ -1,64 +1,24 @@
 {
   "log" : {
-    "current_path" : "/opt/kronometrix/log/current",
-    "base_path" : "/opt/kronometrix/log",
-    "daily_path" : "/opt/kronometrix/log/daily"
+    "current_path" : "/opt/kronometrix/kmon/log/current",
+    "base_path" : "/opt/kronometrix/kmon/log",
+    "daily_path" : "/opt/kronometrix/kmon/log/daily"
   },
   "transport" : {
     "data_file" : [
       {
         "name" : "sys",
         "file" : "sysrec.krd"
-      },
-      {
-        "file" : "cpurec.krd",
-        "name" : "cpu"
-      },
-      {
-        "name" : "disk",
-        "file" : "diskrec.krd"
-      },
-      {
-        "name" : "nic",
-        "file" : "nicrec.krd"
-      },
-      {
-        "name" : "hdw",
-        "file" : "hdwrec.krd"
-      },
-      {
-        "file" : "netrec.krd",
-        "name" : "net"
-      },
-      {
-        "file" : "procrec.krd",
-        "name" : "proc"
-      },
-      {
-        "name" : "jvm",
-        "file" : "jvmrec.krd"
-      },
-      {
-        "file" : "xenrec.krd",
-        "name" : "xen"
-      },
-      {
-        "name" : "zone",
-        "file" : "zonerec.krd"
-      },
-      {
-        "file" : "wsrec.krd",
-        "name" : "ws"
       }
     ],
     "appliance" : [
       {
         "port" : 80,
         "keepalive" : 0,
-        "name" : "Kronometrix Appliance",
-        "host" : "change me",
+        "name" : "Internal Monitoring",
+        "host" : "127.0.0.1",
         "protocol" : "http",
-        "description" : "Kronometrix Appliance Details",
+        "description" : "",
         "cpd" : [
           {
             "dsid" : "",
