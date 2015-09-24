@@ -28,7 +28,7 @@ OS_NAME=`uname -s`
 
 BASEDIR="/opt/kronometrix/mon/etc"
 MON_AGENTS="${BASEDIR}/agents"
-MON_TRANS="${BASEDIR}/trans"
+MON_TRANS="${BASEDIR}/transport"
 
 # basedir test
 test -d ${BASEDIR} || exit 0

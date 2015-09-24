@@ -20,7 +20,7 @@
 
 RETVAL=0
 OS_NAME=`uname -s`
-KRMX_PREFIX="/opt/kronometrix"
+KRMX_PREFIX="/opt/kronometrix/mon"
 KRMX_BIN=${KRMX_PREFIX}/bin
 KRMX_LOG=${KRMX_PREFIX}/log
 TRANSPORT="sender"
@@ -30,16 +30,10 @@ test -f ${KRMX_BIN}/sender || exit 0
 
 
 start() {
-    echo "Starting Kronometrix transport"
-
+    echo "Starting Kronometrix mon transport service"
+  
     RETVAL=0
 
-    if [ "X${OS_NAME}" = "XSunOS" ]; then
-        echo " ${TRANSPORT}: \c"
-    else
-        echo -n " ${TRANSPORT}: "
-    fi
-           
     # check pid before start
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
         kill -0 `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
@@ -62,15 +56,9 @@ start() {
 
 
 stop() {
-    echo "Stopping Kronometrix transport"
+    echo "Stopping Kronometrix mon transport service"
 
     RETVAL=0
-
-    if [ "X${OS_NAME}" = "XSunOS" ]; then
-        echo " ${TRANSPORT}: \c"
-    else
-        echo -n " ${TRANSPORT}: "
-    fi
 
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
         kill `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
@@ -90,15 +78,9 @@ stop() {
 
 
 status() {
-    echo "Status Kronometrix transport"
+    echo "Status Kronometrix mon transport service"
 
     RETVAL=0
-
-    if [ "X${OS_NAME}" = "XSunOS" ]; then
-        echo " ${TRANSPORT}: \c"
-    else
-        echo -n " ${TRANSPORT}: "
-    fi
 
     # check pid before start
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then

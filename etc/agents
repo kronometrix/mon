@@ -26,14 +26,11 @@ KRMX_PREFIX="/opt/kronometrix/mon"
 KRMX_ETC=${KRMX_PREFIX}/etc
 KRMX_LOG=${KRMX_PREFIX}/log
 RECORDERS="sys"
-TRANSPORT="sender"
 
 test -f ${KRMX_ETC}/sysrec.start  || exit 0
-test -f ${KRMX_BIN}/sender || exit 0
 
-
-start_rec() {
-    echo "Starting Kronometrix Appliance Monitoring services"
+start() {
+    echo "Starting Kronometrix mon agents services"
 
     for rec in $RECORDERS
     do
@@ -60,88 +57,15 @@ start_rec() {
     return $RETVAL
 }
 
-start_trans() {
-
-    echo "Starting Kronometrix transport"
-
-    RETVAL=0
-
-    # check pid before start
-    if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
-        kill -0 `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
-        if [ $? -ne 0 ]; then
-            ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
-            RETVAL=$?
-        else
-            RETVAL=1
-        fi
-        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-    else
-        # no pid files
-        ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
-        RETVAL=$?
-        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-    fi
-
-    return $RETVAL
-}
-
-stop_trans() {
-
-    echo "Stopping Kronometrix transport"
-
-    RETVAL=0
-
-    if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
-        kill `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
-        RETVAL=$?
-        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-        
-        # clean-up transport pid file
-        rm ${KRMX_LOG}/${TRANSPORT}.pid
-
-    else
-        RETVAL=1
-        [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-    fi
-
-    return $RETVAL
-}
-
-
-
 stop() {
-    echo "Stopping Kronometrix Appliance Monitoring services"
+    echo "Stopping Kronometrix mon agents services"
 
     for rec in $RECORDERS
     do
         RETVAL=0
 
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
-            # webrec
-            if [ "X$rec" = "Xweb" ]; then
-                case "$OS_NAME" in
-                  SunOS)
-                   kill `ptree \`cat ${KRMX_LOG}/webrec.pid\` | awk '{print $1}' | xargs | awk '{print $2}'` >/dev/null 2>&1
-                   RETVAL=$?
-                   [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-                   continue
-                   ;;
- 
-                  Linux)
-                   kill `cat ${KRMX_LOG}/webrec.pid` >/dev/null 2>&1
-                   RETVAL=$?
-                   [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
-                   continue
-                   ;;
 
-                  *)
-                   echo "Error: not supported OS"
-                   exit 1
-                   ;;
-                esac
-            fi
-                 
             kill `cat ${KRMX_LOG}/${rec}rec.pid` >/dev/null 2>&1
             RETVAL=$?
             [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
@@ -159,18 +83,12 @@ stop() {
 }
 
 status() {
-    echo "Status Kronometrix recorders"
+    echo "Status Kronometrix mon agents service"
 
     for rec in $RECORDERS
     do
         RETVAL=0
 
-        if [ "X${OS_NAME}" = "XSunOS" ]; then
-            echo " ${rec}rec: \c"
-        else
-            echo -n " ${rec}rec: "
-        fi
-           
         # check pid before start
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
             kill -0 `cat ${KRMX_LOG}/${rec}rec.pid` >/dev/null 2>&1
