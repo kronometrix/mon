@@ -1,4 +1,4 @@
-#!/opt/kronometrix/perl/bin/perl
+#!/opt/kronometrix/mon/perl/bin/perl
 #
 #  Copyright (c) 2015 Stefan Parvu (www.kronometrix.org).
 #
@@ -300,12 +300,12 @@ sub open_config {
         }
         else {
             if ( -e "/opt/kronometrix/etc/$conf" ) {
-                open my $fh, "<", "/opt/kronometrix/etc/$conf";
+                open my $fh, "<", "/opt/kronometrix/mon/etc/$conf";
                 $json_data = <$fh>;
                 close $fh;
             }
             else {
-                print "error: open_conf - $! /opt/kronometrix/etc/$conf \n";
+                print "error: open_conf - $! /opt/kronometrix/mon/etc/$conf \n";
                 usage();
             }
         }

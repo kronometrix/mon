@@ -41,7 +41,7 @@ case "$OS_NAME" in
   echo "Not supported OS !"
 esac
 
-KRMX_PREFIX=/opt/kronometrix/kmon
+KRMX_PREFIX=/opt/kronometrix/mon
 KRMX_BIN=${KRMX_PREFIX}/bin
 KRMX_ETC=${KRMX_PREFIX}/etc
 KRMX_LIB=${KRMX_PREFIX}/lib
