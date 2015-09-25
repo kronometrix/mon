@@ -244,7 +244,7 @@ sub open_config {
             }
         }
         else {
-            if ( -e "/opt/kronometrix/etc/$conf" ) {
+            if ( -e "/opt/kronometrix/mon/etc/$conf" ) {
                 open my $fh, "<", "/opt/kronometrix/mon/etc/$conf";
                 $json_data = <$fh>;
                 close $fh;
@@ -290,15 +290,15 @@ sub write_config {
         }
     }
     else {
-        if ( -e "/opt/kronometrix/etc/$conf" ) {
-            open my $fh, ">", "/opt/kronometrix/etc/$conf.tmp";
+        if ( -e "/opt/kronometrix/mon/etc/$conf" ) {
+            open my $fh, ">", "/opt/kronometrix/mon/etc/$conf.tmp";
             print $fh $json_data;
             close $fh;
-            move( "/opt/kronometrix/etc/$conf.tmp", "/opt/kronometrix/etc/$conf" )
+            move( "/opt/kronometrix/mon/etc/$conf.tmp", "/opt/kronometrix/mon/etc/$conf" )
               or die "Error: cannot update $conf: $!";
         }
         else {
-            print "error: write_config - $! /opt/kronometrix/etc/$conf \n";
+            print "error: write_config - $! /opt/kronometrix/mon/etc/$conf \n";
             usage();
         }
     }
@@ -546,8 +546,8 @@ sub send_data {
     ) = @_;
     my $response;
 
-    ## http://server:port/api/private/send_data
-    my $url = "$proto://" . $dest . ":" . $port . "/api/private/send_data";
+    ## http://server:port/api/private/kstats
+    my $url = "$proto://" . $dest . ":" . $port . "/api/private/kstats";
 
     my ($hash, $post);
 
@@ -563,7 +563,7 @@ sub send_data {
 
     $response = $http->request('POST', $url, {
         content => $post,
-        headers => { 'Token' => "$token",
+        headers => { 'krono-user' => '{"username":"admin"}',
                      'content-type' => 'application/x-www-form-urlencoded'},});
 
     my $status = $response->{status};
