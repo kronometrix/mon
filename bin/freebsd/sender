@@ -182,64 +182,9 @@ while (1) {
             my $lmoid;
 
             if ( $_->{"input"} =~ /sysrec/ ) {
-                $lmoid = 'cpd';
+                $lmoid = 'krmxmon';
                 $devid = 'system';
-                $msgid = "$osname-sysrec";
-            }
-            elsif ( $_->{"input"} =~ /cpurec/ ) {
-                $lmoid = 'cpd';
-                $devid = get_devid( 1, $delta );
-                $msgid = "$osname-cpurec";
-            }
-            elsif ( $_->{"input"} =~ /diskrec/ ) {
-                $lmoid = 'cpd';
-                $devid = get_devid( 1, $delta );
-                $msgid = "$osname-diskrec";
-            }
-            elsif ( $_->{"input"} =~ /nicrec/ ) {
-                $lmoid = 'cpd';
-                $devid = get_devid( 1, $delta );
-                $msgid = "$osname-nicrec";
-            }
-            elsif ( $_->{"input"} =~ /netrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-netrec";
-            }
-            elsif ( $_->{"input"} =~ /jvmrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-jvmrec";
-            }
-            elsif ( $_->{"input"} =~ /procrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-procrec";
-            }
-            elsif ( $_->{"input"} =~ /zonerec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-zonerec";
-            }
-            elsif ( $_->{"input"} =~ /webrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-webrec";
-            }
-            elsif ( $_->{"input"} =~ /hdwrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-hdwrec";
-            }
-            elsif ( $_->{"input"} =~ /xenrec/ ) {
-                $lmoid = 'cpd';
-                $devid = 'system';
-                $msgid = "$osname-xenrec";
-            }
-            elsif ( $_->{"input"} =~ /wsrec/ ) {
-                $lmoid = 'wcd';
-                $devid = 'system';
-                $msgid = "$osname-wsrec";
+                $msgid = "krmx-mon-system";
             }
 
             # each appliance
@@ -428,7 +373,7 @@ sub get_hostid {
 sub make_dsid {
 
     my ($data, $huuid) = @_;
-    my @lmo = ('cpd', 'amd', 'wcd');
+    my @lmo = ('krmxmon');
 
     # sid - subscription id
     # dsid - data source id
@@ -529,7 +474,7 @@ sub get_appliance {
     my ($data) = @_;
     my %appl;
 
-    my @lmo = ('cpd', 'amd', 'wcd');
+    my @lmo = ('krmxmon');
 
     my @temp = @{ $data->{'transport'}->{'appliance'} };
 

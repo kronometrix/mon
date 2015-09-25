@@ -1,8 +1,8 @@
 {
   "log" : {
-    "current_path" : "/opt/kronometrix/kmon/log/current",
-    "base_path" : "/opt/kronometrix/kmon/log",
-    "daily_path" : "/opt/kronometrix/kmon/log/daily"
+    "current_path" : "/opt/kronometrix/mon/log/current",
+    "base_path" : "/opt/kronometrix/mon/log",
+    "daily_path" : "/opt/kronometrix/mon/log/daily"
   },
   "transport" : {
     "data_file" : [
@@ -19,11 +19,11 @@
         "host" : "127.0.0.1",
         "protocol" : "http",
         "description" : "",
-        "cpd" : [
+        "krmxmon" : [
           {
             "dsid" : "",
-            "sid"  : "change me",
-            "tid"  : "change me"
+            "sid"  : "krmxmon",
+            "tid"  : "krmxmon"
           }
         ]
       }
