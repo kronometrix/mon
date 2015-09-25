@@ -22,62 +22,42 @@ if [ "X$2" == "XPOST-INSTALL" ]; then
     fi
 
     if [ ! -f /var/cron/tabs/krmx ]; then
-        echo "59 23 * * *  /bin/sleep 55 && /opt/kronometrix/bin/raw2day -n && /usr/sbin/newsyslog -rf /etc/newsyslog.conf.d/kronometrix" >> /var/cron/tabs/krmx
-        echo "00 00 * * *  /bin/sleep 15 && /opt/kronometrix/bin/raw2day -c" >> /var/cron/tabs/krmx
+        echo "59 23 * * *  /bin/sleep 55 && /opt/kronometrix/mon/bin/raw2day -n && /usr/sbin/newsyslog -rf /etc/newsyslog.conf.d/kronometrix" >> /var/cron/tabs/krmx
+        echo "00 00 * * *  /bin/sleep 15 && /opt/kronometrix/mon/bin/raw2day -c" >> /var/cron/tabs/krmx
     fi
 
     # newsyslog kronometrix log rotation job
     if [ ! -f /etc/newsyslog.conf.d/kronometrix ]; then
-        cp /opt/kronometrix/etc/kronometrix.newsyslog /etc/newsyslog.conf.d/kronometrix
+        cp /opt/kronometrix/mon/etc/kronometrix.newsyslog /etc/newsyslog.conf.d/kronometrix
     fi
 
-    # restore config
-    if [ -f /opt/kronometrix/backup/kronometrix.json ]; then
-        cp /opt/kronometrix/backup/kronometrix.json /opt/kronometrix/etc
-    fi
-
-    chown -R krmx:krmx /opt/kronometrix
+    chown -R krmx:krmx /opt/kronometrix/mon
 
     # install kornometrix service
-    grep "^kdr_agents_enable" ${RC_CONF} >/dev/null 2>&1
+    grep "^kmon_enable" ${RC_CONF} >/dev/null 2>&1
     if [ $? -eq 1 ]; then
 
         # add the service
-        echo "kdr_agents_enable=\"YES\"" >> ${RC_CONF}
+        echo "kmon_enable=\"YES\"" >> ${RC_CONF}
         if [ $? -eq 1 ]; then
-            echo "Error: cannot activate service: kdr_agents, exit now"
+            echo "Error: cannot activate service: kmon, exit now"
             exit 1
         fi
     fi
 
-    grep "^kdr_user" ${RC_CONF} >/dev/null 2>&1 
+    grep "^kmon_user" ${RC_CONF} >/dev/null 2>&1 
     if [ $? -eq 1 ]; then
-        echo "kdr_user=\"krmx\"" >> ${RC_CONF}
+        echo "kmon_user=\"krmx\"" >> ${RC_CONF}
         if [ $? -eq 1 ]; then
-            echo "Error: cannot activate service: kdr_user, exit now"
-            exit 1
-        fi
-    fi
-
-    grep "^kdr_transport_enable" ${RC_CONF} >/dev/null 2>&1
-    if [ $? -eq 1 ]; then
-
-        # add the service
-        echo "kdr_transport_enable=\"YES\"" >> ${RC_CONF}
-        if [ $? -eq 1 ]; then
-            echo "Error: cannot activate service: kdr_transport, exit now"
+            echo "Error: cannot activate service: kmon user, exit now"
             exit 1
         fi
     fi
 
     # start and link the service
-    if [ ! -L /etc/rc.d/kdr_agents ]; then
-        ln -s /opt/kronometrix/etc/rc/kdr_agents /etc/rc.d/kdr_agents
+    if [ ! -L /etc/rc.d/kmon ]; then
+        ln -s /opt/kronometrix/mon/etc/rc/kmon /etc/rc.d/kmon
     fi
 
-    if [ ! -L /etc/rc.d/kdr_transport ]; then
-        ln -s /opt/kronometrix/etc/rc/kdr_transport /etc/rc.d/kdr_transport
-    fi
-
-    /etc/rc.d/kdr_agents onestart >/dev/null
+    /etc/rc.d/kmon onestart >/dev/null
 fi
