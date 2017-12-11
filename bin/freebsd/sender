@@ -145,7 +145,8 @@ foreach (@dbs) {
             name               => "$n",
             interval           => 1,
             maxinterval        => $interval,
-            ignore_nonexistant => 1
+            ignore_nonexistant => 1,
+            reset_tail         => "c<0>"
         )
     );
 }
@@ -619,7 +620,7 @@ END
 # revision - print revision and exit
 sub revision {
     print STDERR <<END;
-sender: 1.0.17, 2015-09-19 1353
+sender: 1.1, 2017-12-12 0112
 END
     exit 0;
 }
