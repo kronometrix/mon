@@ -1,6 +1,6 @@
 #!/bin/sh
-
-#  Copyright (c) 2015 Stefan Parvu (www.kronometrix.org).
+#
+#  Copyright (c) 2017 Stefan Parvu (www.kronometrix.org).
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License
@@ -25,17 +25,25 @@ OS_NAME=`uname -s`
 KRMX_PREFIX="/opt/kronometrix/mon"
 KRMX_ETC=${KRMX_PREFIX}/etc
 KRMX_LOG=${KRMX_PREFIX}/log
-RECORDERS="sys"
+RECORDERS=`${KRMX_PREFIX}/bin/actmsg`
 
+# test all startups
 test -f ${KRMX_ETC}/sysrec.start  || exit 0
 
+
 start() {
-    echo "Starting Kronometrix mon agents services"
+    echo "Starting Kronometrix Internal Monitoring Service"
 
     for rec in $RECORDERS
     do
         RETVAL=0
 
+        if [ "X${OS_NAME}" = "XSunOS" ]; then
+            echo " ${rec}rec: \c"
+        else
+            echo -n " ${rec}rec: "
+        fi
+           
         # check pid before start
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
             kill -0 `cat ${KRMX_LOG}/${rec}rec.pid` >/dev/null 2>&1
@@ -57,12 +65,19 @@ start() {
     return $RETVAL
 }
 
+
 stop() {
-    echo "Stopping Kronometrix mon agents services"
+    echo "Stopping Kronometrix Internal Monitoring Service"
 
     for rec in $RECORDERS
     do
         RETVAL=0
+
+        if [ "X${OS_NAME}" = "XSunOS" ]; then
+            echo " ${rec}rec: \c"
+        else
+            echo -n " ${rec}rec: "
+        fi
 
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
 
@@ -83,12 +98,18 @@ stop() {
 }
 
 status() {
-    echo "Status Kronometrix mon agents service"
+    echo "Status Kronometrix Internal Monitoring Service"
 
     for rec in $RECORDERS
     do
         RETVAL=0
 
+        if [ "X${OS_NAME}" = "XSunOS" ]; then
+            echo " ${rec}rec: \c"
+        else
+            echo -n " ${rec}rec: "
+        fi
+           
         # check pid before start
         if [ -f ${KRMX_LOG}/${rec}rec.pid ]; then
             kill -0 `cat ${KRMX_LOG}/${rec}rec.pid` >/dev/null 2>&1

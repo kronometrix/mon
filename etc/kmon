@@ -37,9 +37,9 @@ test -f ${MON_TRANS} || exit 0
 
 
 start() {
-    ${MON_AGENTS} start
-    sleep 1
     ${MON_TRANS} start
+    sleep 1
+    ${MON_AGENTS} start
 }
 
 

@@ -7,8 +7,11 @@
   "transport" : {
     "data_file" : [
       {
-        "name" : "sys",
-        "file" : "sysrec.krd"
+        "name"   : "sys",
+        "file"   : "sysrec.krd",
+        "sample" : 30,
+        "status" : "active",
+        "domain" : [ "krmxmon" ]
       }
     ],
     "appliance" : [
