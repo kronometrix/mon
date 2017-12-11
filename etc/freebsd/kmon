@@ -31,7 +31,7 @@ rcvar=kmon_enable
 
 load_rc_config ${name}
 
-command=/opt/kronometrix/mon/etc/mon
+command=/opt/kronometrix/mon/etc/kmon
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
 status_cmd="${name}_status"
