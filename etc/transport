@@ -1,6 +1,6 @@
 #!/bin/sh
-
-#  Copyright (c) 2015 Stefan Parvu (www.kronometrix.org).
+#
+#  Copyright (c) 2017 Stefan Parvu (www.kronometrix.org).
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License
@@ -18,6 +18,12 @@
 #
 #  (http://www.gnu.org/copyleft/gpl.html)
 
+# Force dsid for epd, dpd data subscriptions
+#   1 - enabled, 0 - disabled
+FORCE=0
+#
+# DO NOT MODIFY BELOW THIS LINE
+#
 RETVAL=0
 OS_NAME=`uname -s`
 KRMX_PREFIX="/opt/kronometrix/mon"
@@ -30,15 +36,25 @@ test -f ${KRMX_BIN}/sender || exit 0
 
 
 start() {
-    echo "Starting Kronometrix mon transport service"
-  
+    echo "Starting Kronometrix Internal Transport Monitoring Service"
+
     RETVAL=0
 
+    if [ "X${OS_NAME}" = "XSunOS" ]; then
+        echo " ${TRANSPORT}: \c"
+    else
+        echo -n " ${TRANSPORT}: "
+    fi
+           
     # check pid before start
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
         kill -0 `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
         if [ $? -ne 0 ]; then
-            ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+            if [ $FORCE -eq 1 ]; then
+                ${KRMX_BIN}/${TRANSPORT} -f -t5 10 >/dev/null 2>&1
+            else
+                ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+            fi
             RETVAL=$?
         else
             RETVAL=1
@@ -46,7 +62,11 @@ start() {
         [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
     else
         # no pid files
-        ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+        if [ $FORCE -eq 1 ]; then
+            ${KRMX_BIN}/${TRANSPORT} -f -t5 10 >/dev/null 2>&1
+        else
+            ${KRMX_BIN}/${TRANSPORT} -t5 10 >/dev/null 2>&1
+        fi
         RETVAL=$?
         [ $RETVAL -eq 0 ] && echo "ok" || echo "failed"
     fi
@@ -56,9 +76,15 @@ start() {
 
 
 stop() {
-    echo "Stopping Kronometrix mon transport service"
+    echo "Stopping Kronometrix Internal Transport Monitoring Service"
 
     RETVAL=0
+
+    if [ "X${OS_NAME}" = "XSunOS" ]; then
+        echo " ${TRANSPORT}: \c"
+    else
+        echo -n " ${TRANSPORT}: "
+    fi
 
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
         kill `cat ${KRMX_LOG}/${TRANSPORT}.pid` >/dev/null 2>&1
@@ -78,9 +104,15 @@ stop() {
 
 
 status() {
-    echo "Status Kronometrix mon transport service"
+    echo "Status Kronometrix Internal Transport Monitoring Service"
 
     RETVAL=0
+
+    if [ "X${OS_NAME}" = "XSunOS" ]; then
+        echo " ${TRANSPORT}: \c"
+    else
+        echo -n " ${TRANSPORT}: "
+    fi
 
     # check pid before start
     if [ -f ${KRMX_LOG}/${TRANSPORT}.pid ]; then
