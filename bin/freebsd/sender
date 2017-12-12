@@ -381,7 +381,7 @@ sub make_dsid {
     # get all sids and generate dsid for each
     # dsid must be unique per sid
 
-    my @applx = @{ $data->{'transport'}->{'appliance'} };
+    my @applx = @{ $data->{'transport'}->{'platform'} };
 
     # populate dsid for each appliance and lmo
     foreach my $appliance (@applx) {
@@ -455,7 +455,7 @@ sub get_datafile {
     my ($data) = @_;
     my $schilds = 0;
     my @d;
-    my @temp = @{ $data->{'transport'}->{'data_file'} };
+    my @temp = @{ $data->{'message'} };
 
     # load d array
     foreach my $f (@temp) {
@@ -477,7 +477,7 @@ sub get_appliance {
 
     my @lmo = ('krmxmon');
 
-    my @temp = @{ $data->{'transport'}->{'appliance'} };
+    my @temp = @{ $data->{'transport'}->{'platform'} };
 
     foreach my $f (@temp) {
         my ($sid, $tid, $dsid);
