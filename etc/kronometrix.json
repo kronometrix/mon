@@ -4,17 +4,17 @@
     "base_path" : "/opt/kronometrix/mon/log",
     "daily_path" : "/opt/kronometrix/mon/log/daily"
   },
+  "message" : [
+    {
+      "name"   : "sys",
+      "file"   : "sysrec.krd",
+      "sample" : 30,
+      "status" : "active",
+      "domain" : [ "krmxmon" ]
+    }
+  ],
   "transport" : {
-    "data_file" : [
-      {
-        "name"   : "sys",
-        "file"   : "sysrec.krd",
-        "sample" : 30,
-        "status" : "active",
-        "domain" : [ "krmxmon" ]
-      }
-    ],
-    "appliance" : [
+    "platform" : [
       {
         "port" : 9002,
         "keepalive" : 0,

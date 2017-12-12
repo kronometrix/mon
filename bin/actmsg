@@ -65,13 +65,13 @@ sub open_config {
             }
         }
         else {
-            if ( -e "/opt/kronometrix/etc/$conf" ) {
-                open my $fh, "<", "/opt/kronometrix/etc/$conf";
+            if ( -e "/opt/kronometrix/mon/etc/$conf" ) {
+                open my $fh, "<", "/opt/kronometrix/mon/etc/$conf";
                 $json_data = <$fh>;
                 close $fh;
             }
             else {
-                print "error: open_conf - $! /opt/kronometrix/etc/$conf \n";
+                print "error: open_conf - $! /opt/kronometrix/mon/etc/$conf \n";
                 usage();
             }
         }
