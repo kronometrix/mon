@@ -1,7 +1,7 @@
 name: "kmon"
 version: "1.0.12"
 origin: "sysutils/kmon"
-comment: "Kronometrix Data Analytics Platform, Mon module"
+comment: "Kronometrix Data Analytics Platform, self-monitoring module"
 arch: "freebsd:10:amd64"
 desc: "A real-time, event based data analytics platform for ICT, IoT, Environmental Monitoring and Meteorology, focusing on deep domain expertise and prescriptive analytics."
 maintainer: support@kronometrix.com
@@ -13,4 +13,4 @@ users: [
 groups: [
     "krmx"
 ]
-licenses: ["GPL"]
+licenses: ["BSDv3"]
